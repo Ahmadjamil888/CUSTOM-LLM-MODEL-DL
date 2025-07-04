@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block title %}ChatGPT - AI Assistant{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChatGPT AI Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+      <h1 class="text-3xl font-bold mb-4 text-blue-700">💬 ChatGPT AI Assistant</h1>
+      
+      <div id="chat-box" class="h-80 overflow-y-auto p-4 border border-gray-200 rounded bg-gray-50 mb-4 text-sm">
+        <!-- Chat history will go here -->
+      </div>
+
+      <form id="chat-form" class="flex space-x-2">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Ask me anything..."
+          class="flex-grow px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+          required
+        />
+        <button
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById('chat-form');
+      const input = document.getElementById('user-input');
+      const chatBox = document.getElementById('chat-box');
+
+      function appendMessage(sender, text) {
+        const msg = document.createElement('div');
+        msg.className = sender === 'user' ? 'text-right mb-2' : 'text-left mb-2';
+        msg.innerHTML = `<span class="inline-block px-3 py-2 rounded ${
+          sender === 'user' ? 'bg-blue-100' : 'bg-gray-200'
+        }"><strong>${sender === 'user' ? 'You' : 'AI'}:</strong> ${text}</span>`;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const message = input.value;
+        appendMessage('user', message);
+        input.value = '';
+
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await res.json();
+        appendMessage('ai', data.response);
+      };
+    </script>
+  </body>
+</html>
+{% endblock %}

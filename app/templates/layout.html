@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}ChatGPT AI{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A ChatGPT-style AI assistant built with PyTorch and Flask." />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="min-h-screen flex flex-col justify-start items-center p-6">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
